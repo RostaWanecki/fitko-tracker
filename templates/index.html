@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>💪 Můj Fitko Progres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 10px;
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+        }
+
+        h1, h2, h3 {
+            color: #ffcc00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #2c2c2c;
+        }
+
+        th, td {
+            border: 1px solid #555;
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #2a2a2a;
+        }
+
+        img {
+            max-width: 200px; /* menší obrázky cviků */
+            display: block;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        div.exercise {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #2c2c2c;
+            border-radius: 8px;
+        }
+
+        input.filter {
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+    <script>
+        // Funkce pro filtraci tabulky podle textu
+        function filterTable() {
+            const input = document.getElementById("filterInput").value.toLowerCase();
+            const table = document.getElementById("workoutsTable");
+            const tr = table.getElementsByTagName("tr");
+            for (let i = 1; i < tr.length; i++) {
+                const rowText = tr[i].innerText.toLowerCase();
+                tr[i].style.display = rowText.includes(input) ? "" : "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>💪 Můj fitko progres</h1>
+
+    {% if strength_img %}
+        <img src="data:image/png;base64,{{ strength_img }}" alt="Graf progresu">
+    {% else %}
+        <p>Žádný graf k dispozici</p>
+    {% endif %}
+
+    <hr>
+
+    <h2>Tréninky</h2>
+    {% if workouts %}
+        <input type="text" id="filterInput" onkeyup="filterTable()" class="filter" placeholder="Filtrovat tabulku...">
+        <table id="workoutsTable">
+            <tr>
+                <th>Datum</th>
+                <th>Typ</th>
+                <th>Cvik</th>
+                <th>Váha</th>
+                <th>Série</th>
+                <th>Opak.</th>
+                <th>Čas</th>
+                <th>Vzdál.</th>
+            </tr>
+            {% for w in workouts %}
+            <tr>
+                <td>{{ w[1] }}</td>
+                <td>{{ w[2] }}</td>
+                <td>{{ w[3] }}</td>
+                <td>{{ w[4] or "-" }}</td>
+                <td>{{ w[5] or "-" }}</td>
+                <td>{{ w[6] or "-" }}</td>
+                <td>{{ w[7] or "-" }}</td>
+                <td>{{ w[8] or "-" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Žádná data v databázi</p>
+    {% endif %}
+
+    <hr>
+
+    <h2>Ukázkové cviky</h2>
+    {% if exercises %}
+        {% for ex in exercises %}
+            <div class="exercise">
+                <h3>{{ ex.name }}</h3>
+                <p>{{ ex.description|safe }}</p>
+                {% if ex.image %}
+                    <img src="{{ ex.image }}" alt="{{ ex.name }}">
+                {% else %}
+                    <p>Obrázek není k dispozici</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Žádné cviky k zobrazení</p>
+    {% endif %}
+</body>
+</html>

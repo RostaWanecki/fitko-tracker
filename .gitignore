@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Secrets
+.env
+
+# Ngrok
+ngrok.yml
+
+data/*.db
+data/*.json
