@@ -70,9 +70,9 @@ class WorkoutTracker:
         
 tracker = WorkoutTracker()
 
-def get_positive_int(prompt):
+def get_positive_int(text_na_dany_cvik):
     while True:
-        value = input(prompt)
+        value = input(text_na_dany_cvik)
         try:
             value_int = int(value)
             if value_int <= 0:
